@@ -147,6 +147,9 @@ export default function BuySection() {
             <p className="text-white font-bold text-[20px] text-center">
               Time Left: 29mins 59s
             </p>
+            <p className="text-red-500 font-bold text-[20px] text-center">
+              Please do not leave this page
+            </p>
             <button
               className="text-white font-semibold mt-3"
               style={{
