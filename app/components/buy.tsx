@@ -1,13 +1,23 @@
 'use client'
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import HorizontalLine from "./hline"; // adjust path if needed
 
 export default function BuySection() {
   const [selectedCoin, setSelectedCoin] = useState("Coin");
+  const [timeLeft, setTimeLeft] = useState(600); // 1800 seconds = 30 minutes
   const [amount, setAmount] = useState("");
   const [bill, setBill] = useState("");
   const [address, setAddress] = useState("");
-  const [showPaymentDetails, setShowPaymentDetails] = useState(false);
+  const [showPaymentDetails, setShowPaymentDetails] = useState
+  (false);
+  const [paymentRef, setPaymentRef] = useState("");
+  const [pricePerCoin, setPricePerCoin] = useState<number | null>(null);
+  const [coinAmount, setCoinAmount] = useState("");
+  const [coinPrice, setCoinPrice] = useState<number | null>(null);
+
+  
+
+
 
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -19,10 +29,121 @@ export default function BuySection() {
       setBill("");
     }
   };
+  
+  useEffect(() => {
+    if (amount && coinPrice) {
+      const total = parseFloat(amount) * coinPrice;
+      setBill(total.toFixed(2));
+    } else {
+      setBill("");
+    }
+  }, [amount, coinPrice]);
+  
 
-  const handlePayClick = () => {
-    setShowPaymentDetails(true);
+  useEffect(() => {
+    const fetchCoinPrice = async () => {
+      if (selectedCoin === "Coin") return;
+  
+      const res = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${selectedCoin.toLowerCase()}&vs_currencies=ngn`);
+      const data = await res.json();
+      setCoinPrice(data[selectedCoin.toLowerCase()].ngn);
+    };
+  
+    fetchCoinPrice();
+  }, [selectedCoin]);
+  
+
+  // Fetch price when coin changes
+useEffect(() => {
+  const fetchPrice = async () => {
+    if (selectedCoin !== "Coin") {
+      const res = await fetch(
+        `https://api.coingecko.com/api/v3/simple/price?ids=${selectedCoin.toLowerCase()}&vs_currencies=ngn`
+      );
+      const data = await res.json();
+      const price = data[selectedCoin.toLowerCase()].ngn;
+      setPricePerCoin(price);
+    }
   };
+  fetchPrice();
+}, [selectedCoin]);
+
+
+
+// Handle bill (editable naira value)
+const handleBillChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const value = e.target.value;
+  setBill(value);
+  if (pricePerCoin && value) {
+    const amount = parseFloat(value) / pricePerCoin;
+    setCoinAmount(amount.toFixed(8)); // 8 decimal places for crypto
+  } else {
+    setCoinAmount("");
+  }
+};
+
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+  
+    if (showPaymentDetails && timeLeft > 0) {
+      timer = setInterval(() => {
+        setTimeLeft((prevTime) => prevTime - 1);
+      }, 1000);
+    }
+  
+    return () => clearInterval(timer);
+  }, [showPaymentDetails, timeLeft]);
+
+  
+  const formatTime = (seconds: number) => {
+    const minutes = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${minutes}m ${secs < 10 ? `0${secs}` : secs}s`;
+  };
+  
+
+  const handlePayClick = async () => {
+    if (selectedCoin === "Coin" || !bill || !address) {
+      alert("Please fill all fields before proceeding.");
+      return;
+    }
+  
+    const uniqueRef = "BUY-" + Math.floor(Math.random() * 1000000000);
+    setPaymentRef(uniqueRef);
+  
+    const order = {
+      coin: selectedCoin,
+      coinPrice,
+      amount: coinAmount, // calculated amount based on bill and price
+      bill,
+      address,
+      reference: uniqueRef,
+      status: "pending",
+      createdAt: new Date().toISOString(),
+    };
+  
+    try {
+      const res = await fetch("/api/orders", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(order),
+      });
+  
+      const data = await res.json();
+      console.log("Order sent to API:", data);
+  
+      setShowPaymentDetails(true);
+    } catch (error) {
+      console.error("Error placing order:", error);
+      alert("Failed to place order. Please try again.");
+    }
+  };
+  
+  
+  
+  
+  
 
   return (
     <div className="flex justify-center items-center w-full">
@@ -48,49 +169,57 @@ export default function BuySection() {
           onChange={(e) => setSelectedCoin(e.target.value)}
         >
           <option disabled>Coin</option>
-          <option>Bitcoin</option>
-          <option>Ethereum</option>
-          <option>Litecoin</option>
-          <option>USDT</option>
+        <option value="bitcoin">Bitcoin</option>
+        <option value="ethereum">Ethereum</option>
+        <option value="litecoin">Litecoin</option>
+        <option value="tether">USDT</option>
+        <option value="solana">Solana</option>
+        <option value="the-open-network">Ton</option>
+        <option value="the-open-network">Ton</option>
+        <option value="doge">Doge</option>
+        <option value="shiba-inu">Shiba</option>
+        <option value="ripple">XRP</option>
+        <option value="avalanche-2">Avalanch</option>
+        <option value="polkadot">Polkadot</option>
         </select>
 
         {/* Form Inputs */}
         <form className="flex flex-col space-y-5">
-          {/* Amount */}
-          <div className="flex items-center space-x-4">
-            <label className="text-[18px] font-bold text-white text-sm w-[90px]">Amount:</label>
-            <input
-              type="number"
-              value={amount}
-              onChange={handleAmountChange}
-              className="px-2"
-              style={{
-                width: "207px",
-                height: "41px",
-                backgroundColor: "#D9D9D9",
-                borderRadius: "6px",
-                color: "#000000",
-              }}
-            />
-          </div>
+          {/* Display coin amount */}
+<div className="flex items-center space-x-4">
+  <label className="text-[18px] font-bold text-white text-sm w-[90px]">Amount:</label>
+  <input
+    type="text"
+    value={coinAmount}
+    readOnly
+    className="px-2"
+    style={{
+      width: "207px",
+      height: "41px",
+      backgroundColor: "#D9D9D9",
+      borderRadius: "6px",
+      color: "#000000",
+    }}
+  />
+</div>
 
-          {/* Bill */}
-          <div className="flex items-center space-x-4">
-            <label className="text-[18px] font-bold text-white text-sm w-[90px]">Bill ($):</label>
-            <input
-              type="text"
-              value={bill}
-              readOnly
-              className="px-2"
-              style={{
-                width: "207px",
-                height: "41px",
-                backgroundColor: "#D9D9D9",
-                borderRadius: "6px",
-                color: "#000000",
-              }}
-            />
-          </div>
+          {/* Bill in NGN */}
+<div className="flex items-center space-x-4">
+  <label className="text-[18px] font-bold text-white text-sm w-[90px]">Bill (₦):</label>
+  <input
+    type="number"
+    value={bill}
+    onChange={handleBillChange}
+    className="px-2"
+    style={{
+      width: "207px",
+      height: "41px",
+      backgroundColor: "#D9D9D9",
+      borderRadius: "6px",
+      color: "#000000",
+    }}
+  />
+</div>
 
           {/* Address */}
           <div className="flex items-center space-x-4">
@@ -139,13 +268,17 @@ export default function BuySection() {
               Send Bill to the account below:
             </p>
             <p className="text-white font-bold text-[20px] text-center">
-              Bank: SampleBank
+              Bank: Access Bank
             </p>
             <p className="text-white font-bold text-[20px] text-center">
-              Details: 1234567890 - John Doe
+              Details: 1508279030 - Chukwu Divine Chiemerie
             </p>
-            <p className="text-white font-bold text-[20px] text-center">
-              Time Left: 29mins 59s
+            <p className="text-red-500 font-bold text-[16px] text-center">
+            Put this in your reference: {paymentRef}
+            </p>
+
+            <p className="text-red-500 font-bold text-[20px] text-center">
+              Time Left: {formatTime(timeLeft)}
             </p>
             <p className="text-red-500 font-bold text-[20px] text-center">
               Please do not leave this page

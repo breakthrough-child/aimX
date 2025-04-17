@@ -1,11 +1,27 @@
 'use client'
 import React, { useState } from "react";
+import { ethers } from "ethers";
+
+
+
+const truncateAddress = (address: string) => {
+  return `${address.slice(0, 4)}...${address.slice(-3)}`;
+};
+
+declare global {
+  interface Window {
+    ethereum?: any;
+  }
+}
+
+
 
 export default function SwapSection() {
   const [selectedCoin, setSelectedCoin] = useState("Coin");
   const [amount, setAmount] = useState("");
   const [bill, setBill] = useState("");
   const [address, setAddress] = useState("");
+  const [account, setAccount] = useState<string | null>(null);
 
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -18,6 +34,30 @@ export default function SwapSection() {
       setBill("");
     }
   };
+
+  const connectWallet = async () => {
+    if (typeof window.ethereum === "undefined") {
+      alert("MetaMask is not installed!");
+      return;
+    }
+  
+    try {
+      const accounts = await window.ethereum.request({
+        method: "eth_requestAccounts",
+      });
+      setAccount(accounts[0]);
+      console.log("Connected account:", accounts[0]);
+    } catch (error: any) {
+      if (error.code === -32002) {
+        alert("A connection request is already pending in MetaMask. Please check your wallet.");
+      } else {
+        console.error(error);
+        alert("Failed to connect wallet");
+      }
+    }
+  };
+  
+  
 
   return (
     <div className="flex justify-center items-center w-full">
@@ -111,17 +151,21 @@ export default function SwapSection() {
         <div className="flex space-x-7 justify-center mt-7">
         {/* Connect Wallet Button */}    
         <button
-            className="text-white font-semibold"
-            style={{
-            width: "92px",
-            height: "37px",
-            backgroundColor: "#334C5C",
-            borderRadius: "6px",
-            boxShadow: "0px 2px 4px rgba(0,0,0,0.25)",
-            }}
-        >
-            Connect
-        </button>
+  onClick={connectWallet}
+  title={account ? "Reconnect / Switch Wallet" : "Connect Wallet"}
+  className="text-white font-semibold"
+  style={{
+    width: "140px",
+    height: "37px",
+    backgroundColor: "#334C5C",
+    borderRadius: "6px",
+    boxShadow: "0px 2px 4px rgba(0,0,0,0.25)",
+  }}
+>
+  {account ? truncateAddress(account) : "Connect"}
+</button>
+
+
 
         
         {/* Pay Button */}

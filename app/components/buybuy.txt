@@ -31,3 +31,113 @@
         <option>Solaxy</option>
         <option>SUBBD</option>
         <option>AI Tokens</option>
+
+
+        
+
+        {
+    "user": {
+        "id": "d9d32db4-6cd8-40ea-ab1b-de8e84e92938",
+        "email": "tests@example.com",
+        "wallet": "0xSomeWalletsAddress",
+        "createdAt": "2025-04-15T16:57:19.175Z"
+    }
+}
+
+
+{
+    "swap": {
+        "id": "d4b2fac1-7600-434e-b104-6411e47bf74a",
+        "userId": "d9d32db4-6cd8-40ea-ab1b-de8e84e92938",
+        "coinType": "USDT",
+        "amount": 100,
+        "fee": 2,
+        "recipient": "0xWalletAddressHere",
+        "reference": "9c32965c-16ba-489e-a663-9c9ea57d3c6d",
+        "status": "pending",
+        "createdAt": "2025-04-16T13:21:58.704Z",
+        "virtualAccountId": null
+    }
+}
+
+
+{
+    "swaps": [
+        {
+            "id": "7809ecc5-b155-4716-966c-2fdbe5c01068",
+            "userId": "d9d32db4-6cd8-40ea-ab1b-de8e84e92938",
+            "coinType": "USDT",
+            "amount": 100,
+            "fee": 2,
+            "recipient": "0xSomeWalletAddress",
+            "reference": "deb0dc17-2174-4553-9900-ab62ce64b29a",
+            "status": "pending",
+            "createdAt": "2025-04-15T16:58:42.569Z",
+            "virtualAccountId": null
+        },
+        {
+            "id": "af9a750b-cf41-448a-8586-8a291bbe77aa",
+            "userId": "2e502fc1-f278-415c-811c-39e202338abf",
+            "coinType": "USDT",
+            "amount": 5000,
+            "fee": 50,
+            "recipient": "0x1234567890abcdef",
+            "reference": "61a797ef-8e26-43bd-94f9-d4f1c87471cf",
+            "status": "pending",
+            "createdAt": "2025-04-15T18:07:50.586Z",
+            "virtualAccountId": null
+        },
+        {
+            "id": "d4b2fac1-7600-434e-b104-6411e47bf74a",
+            "userId": "d9d32db4-6cd8-40ea-ab1b-de8e84e92938",
+            "coinType": "USDT",
+            "amount": 100,
+            "fee": 2,
+            "recipient": "0xWalletAddressHere",
+            "reference": "9c32965c-16ba-489e-a663-9c9ea57d3c6d",
+            "status": "pending",
+            "createdAt": "2025-04-16T13:21:58.704Z",
+            "virtualAccountId": null
+        }
+    ]
+}
+
+
+[
+  {
+    id: '7809ecc5-b155-4716-966c-2fdbe5c01068',
+    userId: 'd9d32db4-6cd8-40ea-ab1b-de8e84e92938',
+    coinType: 'USDT',
+    amount: 100,
+    fee: 2,
+    recipient: '0xSomeWalletAddress',
+    reference: 'deb0dc17-2174-4553-9900-ab62ce64b29a',
+    status: 'pending',
+    createdAt: 2025-04-15T16:58:42.569Z,
+    virtualAccountId: null
+  },
+  {
+    id: 'af9a750b-cf41-448a-8586-8a291bbe77aa',
+    userId: '2e502fc1-f278-415c-811c-39e202338abf',
+    coinType: 'USDT',
+    amount: 5000,
+    fee: 50,
+    recipient: '0x1234567890abcdef',
+    reference: '61a797ef-8e26-43bd-94f9-d4f1c87471cf',
+    status: 'pending',
+    createdAt: 2025-04-15T18:07:50.586Z,
+    virtualAccountId: null
+  },
+  {
+    id: 'd4b2fac1-7600-434e-b104-6411e47bf74a',
+    userId: 'd9d32db4-6cd8-40ea-ab1b-de8e84e92938',
+    coinType: 'USDT',
+    amount: 100,
+    fee: 2,
+    recipient: '0xWalletAddressHere',
+    reference: '9c32965c-16ba-489e-a663-9c9ea57d3c6d',
+    status: 'pending',
+    createdAt: 2025-04-16T13:21:58.704Z,
+    virtualAccountId: null
+  }
+]

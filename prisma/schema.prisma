@@ -1,0 +1,55 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  swaps     Swap[]   // ← this exists already
+}
+
+model Swap {
+  id                String          @id @default(uuid())
+  userId            String
+  user              User            @relation(fields: [userId], references: [id]) // ← this is what’s missing
+  coinType          String
+  amount            Float
+  fee               Float
+  recipient         String
+  reference         String          @unique
+  status            String
+  createdAt         DateTime        @default(now())
+  virtualAccount    VirtualAccount?
+}
+
+model VirtualAccount {
+  id            String   @id @default(uuid())
+  accountName   String
+  accountNumber String
+  bankName      String
+  swapId        String   @unique
+  swap          Swap     @relation(fields: [swapId], references: [id])
+  createdAt     DateTime @default(now())
+}
+
+
+
+
+
+
+
+model Payment {
+  id        String   @id @default(uuid())
+  reference String   @unique
+  amount    Float
+  status    String   @default("pending")
+  createdAt DateTime @default(now())
+}
+
+
+
