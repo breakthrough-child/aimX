@@ -141,3 +141,12 @@
     virtualAccountId: null
   }
 ]
+
+
+curl -X POST http://localhost:3000/api/sendTokens \
+  -H "Content-Type: application/json" \
+  -d '{
+    "walletAddress": "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199",
+    "amountPaid": "10"
+  }'
+
