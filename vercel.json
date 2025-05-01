@@ -1,0 +1,12 @@
+{
+    "crons": [
+      {
+        "path": "/api/retry-failed-sends",
+        "schedule": "*/10 * * * *",
+        "headers": {
+          "x-internal-secret": "YOUR_INTERNAL_API_SECRET"
+        }
+      }
+    ]
+  }
+  

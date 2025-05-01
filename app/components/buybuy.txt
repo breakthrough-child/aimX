@@ -150,3 +150,20 @@ curl -X POST http://localhost:3000/api/sendTokens \
     "amountPaid": "10"
   }'
 
+
+
+
+
+📌 Monnify webhook setup:
+
+In your Monnify dashboard:
+
+    Go to Developer Settings
+
+    Set your webhook URL: https://yourdomain.com/api/monnify-webhook
+
+    Use your secret key for HMAC signing
+
+    npx hardhat run scripts/deploy.ts --network localhost
+
+

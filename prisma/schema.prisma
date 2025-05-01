@@ -4,27 +4,42 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = env("DATABASE_URL") // production Neon URL
 }
 
 model User {
   id        String   @id @default(uuid())
   email     String   @unique
-  swaps     Swap[]   // ← this exists already
+  swaps     Swap[]   @relation("UserSwaps")
 }
 
 model Swap {
-  id                String          @id @default(uuid())
-  userId            String
-  user              User            @relation(fields: [userId], references: [id]) // ← this is what’s missing
-  coinType          String
-  amount            Float
-  fee               Float
-  recipient         String
-  reference         String          @unique
-  status            String
-  createdAt         DateTime        @default(now())
-  virtualAccount    VirtualAccount?
+  id                  String          @id @default(uuid())
+  userId              String
+  user                User            @relation("UserSwaps", fields: [userId], references: [id])
+  coinType            String
+  network             String
+  amount              Float
+  fee                 Float
+  recipient           String
+  reference           String          @unique
+  status              String
+  paymentConfirmedAt  DateTime?
+  createdAt           DateTime        @default(now())
+  updatedAt           DateTime        @updatedAt
+  virtualAccount      VirtualAccount?
+  payment             Payment?
+}
+
+model Payment {
+  id        String   @id @default(uuid())
+  swapId    String   @unique
+  swap      Swap     @relation(fields: [swapId], references: [id])
+  reference String   @unique
+  amount    Float
+  status    String   @default("pending")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model VirtualAccount {
@@ -36,20 +51,3 @@ model VirtualAccount {
   swap          Swap     @relation(fields: [swapId], references: [id])
   createdAt     DateTime @default(now())
 }
-
-
-
-
-
-
-
-model Payment {
-  id        String   @id @default(uuid())
-  reference String   @unique
-  amount    Float
-  status    String   @default("pending")
-  createdAt DateTime @default(now())
-}
-
-
-

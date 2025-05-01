@@ -6,6 +6,10 @@ dotenv.config();
 
 const config: HardhatUserConfig = {
   solidity: "0.8.28",
+  paths: {
+    sources: "./contracts",
+    artifacts: "./artifacts"
+  },
   typechain: {
     outDir: "typechain-types",
     target: "ethers-v6",

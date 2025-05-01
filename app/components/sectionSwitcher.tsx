@@ -11,7 +11,7 @@ export default function SectionSwitcher({
   setActiveSection,
 }: SectionSwitcherProps) {
   return (
-    <div className="w-full flex items-center justify-center space-x-8 bg-[#A6F6FF] mt-[120px]" style={{ height: "45px" }}>
+    <div className="w-full flex items-center justify-center space-x-8 bg-[#A6F6FF] mt-[80px]" style={{ height: "45px" }}>
       {["Buy", "Swap", "Swapsend"].map((section, index) => (
         <React.Fragment key={section}>
           <p

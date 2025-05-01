@@ -24,6 +24,7 @@
 # misc
 .DS_Store
 *.pem
+./app/potato-meatpie/page
 
 # debug
 npm-debug.log*

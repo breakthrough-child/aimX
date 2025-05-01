@@ -5,7 +5,7 @@ import { FaTelegramPlane } from "react-icons/fa";
 
 export default function Footer() {
   return (
-    <footer className="w-full bg-[#334C5C] text-[#FFFFFF] flex flex-col items-center justify-center" style={{ height: "107px" }}>
+    <footer className="w-full bg-[#334C5C] text-[#FFFFFF] flex flex-col items-center justify-center" style={{ height: "90px" }}>
       {/* Project Title */}
       <p className="font-bold text-[20px] font-[Inter] text-center">
         An Africa In Mind Project

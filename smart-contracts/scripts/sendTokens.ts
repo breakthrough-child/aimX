@@ -1,6 +1,9 @@
 import { ethers } from "hardhat";
 import { loadDeployedAddresses, getDeployer } from "./utils";
 import { getERC20Balance } from "./utils";
+import * as dotenv from "dotenv";
+
+dotenv.config();
 
 async function main() {
   const sender = await getDeployer();

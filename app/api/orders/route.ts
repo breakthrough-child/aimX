@@ -1,11 +1,44 @@
-// app/api/orders/route.ts
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from 'next/server';
+import fs from 'fs';
+import path from 'path';
 
-export async function POST(req: NextRequest) {
-  const body = await req.json();
+const ordersFile = path.join(process.cwd(), 'orders.json');
 
-  console.log("Received order:", body);
+// POST request handler to save a new order
+export async function POST(request: Request) {
+  const order = await request.json();
 
-  // Here you'd save to your DB in a real app — for now, we’ll just return it
-  return NextResponse.json({ message: "Order received", order: body });
+  try {
+    let orders = [];
+
+    if (fs.existsSync(ordersFile)) {
+      const fileData = fs.readFileSync(ordersFile, 'utf-8'); // ✅ read as string
+      orders = JSON.parse(fileData);
+    }
+
+    orders.push(order);
+
+    fs.writeFileSync(ordersFile, JSON.stringify(orders, null, 2), 'utf-8'); // ✅ write as string
+
+    return NextResponse.json({ message: 'Order saved', order });
+  } catch (err) {
+    console.error('Error saving order:', err);
+    return NextResponse.json({ message: 'Error saving order' }, { status: 500 });
+  }
+}
+
+// GET request handler to fetch all orders
+export async function GET() {
+  try {
+    if (fs.existsSync(ordersFile)) {
+      const fileData = fs.readFileSync(ordersFile, 'utf-8'); // ✅ read as string
+      const orders = JSON.parse(fileData);
+      return NextResponse.json(orders);
+    } else {
+      return NextResponse.json([], { status: 404 });
+    }
+  } catch (err) {
+    console.error('Error reading orders:', err);
+    return NextResponse.json({ message: 'Error reading orders' }, { status: 500 });
+  }
 }
