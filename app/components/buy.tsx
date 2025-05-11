@@ -55,9 +55,9 @@ const BuySection = forwardRef<BuySectionHandle>((props, ref) => {
   }, [selectedCoin, selectedCurrency]);
 
   const generateTempBankDetails = () => ({
-    bank: "Access Bank",
-    account: "1508279030",
-    name: "Divine Chiemerie",
+    bank: "Opay",
+    account: "9157961776",
+    name: "Chukwu DIvine Chiemerie",
   });
 
   const handleBillChange = (e: React.ChangeEvent<HTMLInputElement>) => {
