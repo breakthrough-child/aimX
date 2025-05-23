@@ -1,6 +1,7 @@
 import * as dotenv from "dotenv";
 import { HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
+import "hardhat-typechain"; // Make sure this plugin is added for typechain support
 
 dotenv.config();
 
