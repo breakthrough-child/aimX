@@ -1,0 +1,20 @@
+export const tokenAddresses: Record<string, string> = {
+  USDC: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+  WETH: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+  LINK: "0x514910771AF9Ca656af840dff83E8264EcF986CA",
+  // Add other tokens here
+  WrappedBTC: "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",   // if there's a wrapped BTC on Ethereum, put its contract address
+  Tether: "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+  // Continue for your dropdown tokens
+  USDT: "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+
+WBTC: "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
+
+SHIB: "0x04fbb8cb57cc27e4ff050f2706047c727f4f0494",
+
+DOGE: "0x4206931337dc273a630d328da6441786bfad668f",
+
+XRP: "0x9acc0f92a0ce2ebe81456a77f2d21f3c39781570",
+
+SUI: "0xef74ea95129dc95f36765192427bb83954f87989",
+}

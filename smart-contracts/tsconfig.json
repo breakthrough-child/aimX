@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "target": "es2020", // This is correct for BigInt support
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "lib": ["es2020"] // Ensures support for ES2020 features
+  }
+}
